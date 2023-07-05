@@ -87,7 +87,7 @@ ruMarkersSource.on("addfeature", (feature) => {
   featuresTable.push(feature.feature);
 });
 
-searchBar.onkeyup = () => {
+searchBar.oninput = () => {
   featuresTable.sort();
   const table = document.getElementById("mainTable__body");
   const removableElements = table.getElementsByClassName("mainTable__row");
@@ -96,7 +96,9 @@ searchBar.onkeyup = () => {
   }
   for (let i = featuresTable.length - 1; i >= 0; --i) {
     if (
-      featuresTable[i].values_.name_ru?.toLowerCase().includes(searchBar.value)
+      featuresTable[i].values_.name_ru
+        ?.toLowerCase()
+        .includes(searchBar.value.toLowerCase())
     ) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row";
