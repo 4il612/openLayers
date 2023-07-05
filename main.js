@@ -45,9 +45,6 @@ const tileLayer = new TileLayer({
 });
 
 const urlArgs = new URLSearchParams(window.location.search);
-console.log(urlArgs.get("zoom"));
-console.log(urlArgs.get("lat"));
-console.log(urlArgs.get("lon"));
 
 const map = new Map({
   target: "map",
