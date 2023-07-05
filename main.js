@@ -67,6 +67,90 @@ const showVectorBTN = document.getElementById("showVectorBTN");
 const closeModalBTN = document.getElementById("myModal__closeBtn");
 const startShowBTN = document.getElementById("startShowBTN");
 const isRussianOnlyCheckBox = document.getElementById("filterBoxCheck");
+const searchBar = document.getElementById("searchPointInput");
+
+const featuresTable = [];
+
+markersSource.on("addfeature", (feature) => {
+  featuresTable.push(feature.feature);
+});
+
+ruMarkersSource.on("addfeature", (feature) => {
+  featuresTable.push(feature.feature);
+});
+
+searchBar.onkeyup = () => {
+  featuresTable.sort();
+  const table = document.getElementById("mainTable__body");
+  const removableElements = table.getElementsByClassName("mainTable__row");
+  while (removableElements[0]) {
+    removableElements[0].parentNode.removeChild(removableElements[0]);
+  }
+  for (let i = featuresTable.length - 1; i > 1; --i) {
+    if (featuresTable[i].values_.name_ru?.includes(searchBar.value)) {
+      const trow = document.createElement("tr");
+      trow.className = "mainTable__row";
+      const trowName = document.createElement("td");
+      trowName.innerHTML = featuresTable[i].values_.name_ru;
+      trowName.className = "mainTable__name";
+      const trowType = document.createElement("td");
+      trowType.innerHTML = "";
+      trowType.className = "mainTable__type";
+      const trowAddress = document.createElement("td");
+      trowAddress.innerHTML = "";
+      trowAddress.className = "mainTable__address";
+      const trowLON = document.createElement("td");
+      trowLON.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[0];
+      trowLON.className = "mainTable__lon";
+      const trowLAT = document.createElement("td");
+      trowLAT.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[1];
+      trowLAT.className = "mainTable__lat";
+      trow.appendChild(trowName);
+      trow.appendChild(trowType);
+      trow.appendChild(trowAddress);
+      trow.appendChild(trowLON);
+      trow.appendChild(trowLAT);
+      table.appendChild(trow);
+      trow.onclick = (e) => {
+        zoomToMarker(
+          Number(e.currentTarget.children[3].textContent),
+          Number(e.currentTarget.children[4].textContent)
+        );
+      };
+    }
+    if (featuresTable[i].values_.name?.includes(searchBar.value)) {
+      const trow = document.createElement("tr");
+      trow.className = "mainTable__row englishRow";
+      const trowName = document.createElement("td");
+      trowName.innerHTML = featuresTable[i].values_.name;
+      trowName.className = "mainTable__name";
+      const trowType = document.createElement("td");
+      trowType.innerHTML = featuresTable[i].values_["marker-symbol"];
+      trowType.className = "mainTable__type";
+      const trowAddress = document.createElement("td");
+      trowAddress.innerHTML = featuresTable[i].values_.address;
+      trowAddress.className = "mainTable__address";
+      const trowLON = document.createElement("td");
+      trowLON.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[0];
+      trowLON.className = "mainTable__lon";
+      const trowLAT = document.createElement("td");
+      trowLAT.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[1];
+      trowLAT.className = "mainTable__lat";
+      trow.appendChild(trowName);
+      trow.appendChild(trowType);
+      trow.appendChild(trowAddress);
+      trow.appendChild(trowLON);
+      trow.appendChild(trowLAT);
+      table.appendChild(trow);
+      trow.onclick = (e) => {
+        zoomToMarker(
+          Number(e.currentTarget.children[3].textContent),
+          Number(e.currentTarget.children[4].textContent)
+        );
+      };
+    }
+  }
+};
 
 isRussianOnlyCheckBox.onchange = () => {
   if (isRussianOnlyCheckBox.checked) {
@@ -91,7 +175,6 @@ isRussianOnlyCheckBox.onchange = () => {
       feature.values_.geometry.flatCoordinates[1],
     ]);
   });
-  data.sort();
   for (let i = 0; i < data.length; ++i) {
     const elem = data[i];
     const trow = document.createElement("tr");
@@ -133,7 +216,6 @@ isRussianOnlyCheckBox.onchange = () => {
       feature.values_.geometry.flatCoordinates[0],
       feature.values_.geometry.flatCoordinates[1],
     ]);
-    data.sort();
   });
   for (let i = 0; i < data.length; ++i) {
     const elem = data[i];
@@ -292,7 +374,6 @@ ruMarkersSource.on("featuresloadend", () => {
       feature.values_.geometry.flatCoordinates[0],
       feature.values_.geometry.flatCoordinates[1],
     ]);
-    data.sort();
   });
   for (let i = 0; i < data.length; ++i) {
     const elem = data[i];
@@ -340,7 +421,6 @@ markersSource.on("featuresloadend", () => {
       feature.values_.geometry.flatCoordinates[1],
     ]);
   });
-  data.sort();
   for (let i = 0; i < data.length; ++i) {
     const elem = data[i];
     const trow = document.createElement("tr");
