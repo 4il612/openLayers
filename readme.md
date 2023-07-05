@@ -1,18 +1,23 @@
-# OpenLayers + Vite
+# openLayers
 
-This example demonstrates how the `ol` package can be used with [Vite](https://vitejs.dev/).
+Задание по JavaScript на картографическую тематику.
 
-To get started, run the following (requires Node 14+):
+Использование картографических библиотек на ваше усмотрение - Leaflet, OpenLayer, Mapbox, Yandex Maps.
 
-    npx create-ol-app my-app --template vite
+На странице необходимо отобразить карту с маркерами, соответствующими объектам из файлов.
 
-Then change into your new `my-app` directory and start a development server (available at http://localhost:5173):
+- Над картой должны быть переключатели данных (layer1, layer2).
+- По клику на маркер на карте должно выскакивать окно с данными по выбранному объекту.
+- Под картой должна генерироваться таблица с данными по объектам.
+- Должен присутствовать фильтр по полю name/name_ru, который в реальном времени отсеивает объекты на карте и в таблице.
+- Переключение между файлами не должно вызывать перезагрузку страницы.
+- При клике на элементе таблицы - карта должна приближаться к объекту.
+- Позиция карты, выбранный слой и фильтр должны сохраняться при обновлении страницы.
+- Карта и таблица должны быть растянуты на всю страницу, у самой страницы не должно быть скроллов.
+- Должна быть кнопка, запускающая режим презентации, в котором карта по очереди приближается к объектам, отображая при этом информационное окно.
 
-    cd my-app
-    npm start
+Для запуска:
 
-To generate a build ready for production:
+npm install //установка нужных пакетов из зависимостей
 
-    npm run build
-
-Then deploy the contents of the `dist` directory to your server. You can also run `npm run serve` to serve the results of the `dist` directory for preview.
+npm start //запуск самого проекта
