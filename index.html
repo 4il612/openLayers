@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ORBIS PRACTICE</title>
+    <link rel="stylesheet" href="node_modules/ol/ol.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div id="swapButtons">
+      <button id="showTileBTN" class="swapButton">TileLayer</button>
+      <button id="showVectorBTN" class="swapButton">VectorLayer</button>
+    </div>
+    <div class="showWrapper">
+      <button id="startShowBTN">SHOW</button>
+    </div>
+    <div class="filterBoxWrapper">
+      <div class="filterBoxSubWrapper">
+        <input type="checkbox" name="isRussianOnly" id="filterBoxCheck" />
+        <label for="isRussianOnly">RUS<br />only</label>
+      </div>
+    </div>
+    <div id="info">&nbsp;</div>
+    <div class="table__wrapper">
+      <table id="mainTable">
+        <thead>
+          <tr>
+            <th>NAME</th>
+            <th>TYPE</th>
+            <th>ADDRESS</th>
+            <th>lat</th>
+            <th>lon</th>
+          </tr>
+        </thead>
+        <tbody id="mainTable__body"></tbody>
+      </table>
+    </div>
+
+    <!-- Pointer events polyfill for old browsers, see https://caniuse.com/#feat=pointer -->
+    <script src="https://cdn.jsdelivr.net/npm/elm-pep@1.0.6/dist/elm-pep.js"></script>
+    <script type="module" src="main.js"></script>
+    <div class="hystmodal" id="myModal" aria-hidden="true">
+      <div class="hystmodal__wrap">
+        <div class="hystmodal__window" role="dialog" aria-modal="true">
+          <h1 id="myModal__name"></h1>
+          <h2 id="myModal__nameRU"></h2>
+          <p id="myModal__marker"></p>
+          <p id="myModal__address"></p>
+          <div class="hystmodal__btnWrapper">
+            <button id="myModal__closeBtn">close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

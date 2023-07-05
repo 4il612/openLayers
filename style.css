@@ -1,0 +1,152 @@
+@import "node_modules/ol/ol.css";
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background-color: #aad3df;
+  overflow-y: hidden;
+}
+
+#map {
+  height: 80%;
+}
+
+#swapButtons {
+  display: flex;
+  position: absolute;
+  top: 0;
+  width: 100%;
+  justify-content: center;
+}
+
+.swapButton {
+  font-size: 2.2rem;
+  width: 200px;
+  margin: 20px;
+}
+
+.hystmodal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: none;
+  flex-flow: column nowrap;
+  justify-content: center; /* см. ниже */
+  align-items: start;
+  z-index: 99;
+  padding: 30px 0;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.hystmodal__btnWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.hystmodal__window {
+  background: #fff;
+  margin-left: 20px;
+  margin-top: -100px;
+  /* Установим по умолчанию ширину 600px
+    но она будет не больше ширины браузера */
+  min-width: 400px;
+  max-width: 540px;
+
+  border-radius: 24px;
+  padding: 30px;
+}
+
+#myModal__name {
+  text-align: center;
+  letter-spacing: 4px;
+}
+
+#myModal__marker {
+  font-size: 2.2rem;
+  color: rgb(116, 116, 116);
+}
+
+#myModal__address {
+  font-size: 2rem;
+}
+
+#myModal__closeBtn {
+  font-size: 1.2rem;
+}
+
+#mainTable {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.table__wrapper {
+  overflow-y: auto;
+  height: 20%;
+}
+
+.mainTable__row {
+  background-color: #e3e3e3;
+}
+
+.mainTable__row:hover {
+  background-color: #9a9a9a;
+  cursor: pointer;
+}
+
+.mainTable__type {
+  text-align: center;
+}
+
+.mainTable__address {
+  text-align: end;
+}
+
+.table__wrapper {
+  padding: 0 4px;
+}
+
+#myModal__nameRU {
+  color: #9a9a9a;
+  display: none;
+}
+
+.mainTable__lon {
+  text-align: center;
+}
+
+.mainTable__lat {
+  text-align: center;
+}
+
+#startShowBTN {
+  position: absolute;
+  top: 20px;
+  left: 100px;
+}
+
+#filterBoxCheck {
+  width: 50px;
+  height: 50px;
+}
+
+.filterBoxWrapper {
+  position: absolute;
+  bottom: 160px;
+  left: 20px;
+  display: flex;
+  justify-content: start;
+  align-items: start;
+}
+
+.filterBoxSubWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
