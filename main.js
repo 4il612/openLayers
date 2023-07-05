@@ -8,12 +8,12 @@ import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
 
 const markersSource = new VectorSource({
-  url: "points.geojson",
+  url: "data/points.geojson",
   format: new GeoJSON({}),
 });
 
 const ruMarkersSource = new VectorSource({
-  url: "ruPoints.geojson",
+  url: "data/ruPoints.geojson",
   format: new GeoJSON(),
 });
 
@@ -281,7 +281,7 @@ startShowBTN.onclick = () => {
   }
 };
 
-ruMarkersSource.on("featuresloadend", async () => {
+ruMarkersSource.on("featuresloadend", () => {
   const markerTabel = document.getElementById("mainTable__body");
   const data = [];
   ruMarkersSource.forEachFeature((feature) => {
@@ -328,7 +328,7 @@ ruMarkersSource.on("featuresloadend", async () => {
   }
 });
 
-markersSource.on("featuresloadend", async () => {
+markersSource.on("featuresloadend", () => {
   const markerTabel = document.getElementById("mainTable__body");
   const data = [];
   markersSource.forEachFeature((feature) => {
