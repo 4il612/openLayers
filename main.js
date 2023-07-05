@@ -7,6 +7,7 @@ import { Fill, Style } from "ol/style.js";
 import TileLayer from "ol/layer/Tile";
 import OSM from "ol/source/OSM";
 
+//построение ресурсов
 const markersSource = new VectorSource({
   url: "data/points.geojson",
   format: new GeoJSON({}),
@@ -17,6 +18,7 @@ const ruMarkersSource = new VectorSource({
   format: new GeoJSON(),
 });
 
+//построение слоев
 const markersLayer = new VectorLayer({
   className: "markers",
   source: markersSource,
@@ -44,8 +46,10 @@ const tileLayer = new TileLayer({
   source: new OSM(),
 });
 
+//парсинг URL
 const urlArgs = new URLSearchParams(window.location.search);
 
+//инициализация карты
 const map = new Map({
   target: "map",
   controls: [],
@@ -62,6 +66,7 @@ const style = new Style({
   }),
 });
 
+//поиск объектов для взаимодействия
 const showTileBTN = document.getElementById("showTileBTN");
 const showVectorBTN = document.getElementById("showVectorBTN");
 const closeModalBTN = document.getElementById("myModal__closeBtn");
@@ -69,8 +74,10 @@ const startShowBTN = document.getElementById("startShowBTN");
 const isRussianOnlyCheckBox = document.getElementById("filterBoxCheck");
 const searchBar = document.getElementById("searchPointInput");
 
+//массив строк таблицы
 const featuresTable = [];
 
+//обработчики событий
 markersSource.on("addfeature", (feature) => {
   featuresTable.push(feature.feature);
 });
@@ -86,7 +93,7 @@ searchBar.onkeyup = () => {
   while (removableElements[0]) {
     removableElements[0].parentNode.removeChild(removableElements[0]);
   }
-  for (let i = featuresTable.length - 1; i > 1; --i) {
+  for (let i = featuresTable.length - 1; i > 0; --i) {
     if (featuresTable[i].values_.name_ru?.includes(searchBar.value)) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row";
@@ -152,104 +159,104 @@ searchBar.onkeyup = () => {
   }
 };
 
-isRussianOnlyCheckBox.onchange = () => {
-  if (isRussianOnlyCheckBox.checked) {
-    map.setLayers([tileLayer, ruMarkersLayer]);
-    const table = document.getElementById("mainTable__body");
-    const removableElements = table.getElementsByClassName("englishRow");
-    while (removableElements[0]) {
-      removableElements[0].parentNode.removeChild(removableElements[0]);
-    }
-    return;
-  }
-  map.setLayers([tileLayer, markersLayer, ruMarkersLayer]);
-  const markerTabel = document.getElementById("mainTable__body");
-  markerTabel.replaceChildren();
-  let data = [];
-  markersSource.forEachFeature((feature) => {
-    data.push([
-      feature.values_.name,
-      feature.values_["marker-symbol"],
-      feature.values_.address,
-      feature.values_.geometry.flatCoordinates[0],
-      feature.values_.geometry.flatCoordinates[1],
-    ]);
-  });
-  for (let i = 0; i < data.length; ++i) {
-    const elem = data[i];
-    const trow = document.createElement("tr");
-    trow.className = "mainTable__row englishRow";
-    const trowName = document.createElement("td");
-    trowName.innerHTML = elem[0];
-    trowName.className = "mainTable__name";
-    const trowType = document.createElement("td");
-    trowType.innerHTML = elem[1];
-    trowType.className = "mainTable__type";
-    const trowAddress = document.createElement("td");
-    trowAddress.innerHTML = elem[2];
-    trowAddress.className = "mainTable__address";
-    const trowLON = document.createElement("td");
-    trowLON.innerHTML = elem[3];
-    trowLON.className = "mainTable__lon";
-    const trowLAT = document.createElement("td");
-    trowLAT.innerHTML = elem[4];
-    trowLAT.className = "mainTable__lat";
-    trow.appendChild(trowName);
-    trow.appendChild(trowType);
-    trow.appendChild(trowAddress);
-    trow.appendChild(trowLON);
-    trow.appendChild(trowLAT);
-    markerTabel.appendChild(trow);
-    trow.onclick = (e) => {
-      zoomToMarker(
-        Number(e.currentTarget.children[3].textContent),
-        Number(e.currentTarget.children[4].textContent)
-      );
-    };
-  }
-  data = [];
-  ruMarkersSource.forEachFeature((feature) => {
-    data.push([
-      feature.values_.name_ru,
-      "",
-      "",
-      feature.values_.geometry.flatCoordinates[0],
-      feature.values_.geometry.flatCoordinates[1],
-    ]);
-  });
-  for (let i = 0; i < data.length; ++i) {
-    const elem = data[i];
-    const trow = document.createElement("tr");
-    trow.className = "mainTable__row";
-    const trowName = document.createElement("td");
-    trowName.innerHTML = elem[0];
-    trowName.className = "mainTable__name";
-    const trowType = document.createElement("td");
-    trowType.innerHTML = elem[1];
-    trowType.className = "mainTable__type";
-    const trowAddress = document.createElement("td");
-    trowAddress.innerHTML = elem[2];
-    trowAddress.className = "mainTable__address";
-    const trowLON = document.createElement("td");
-    trowLON.innerHTML = elem[3];
-    trowLON.className = "mainTable__lon";
-    const trowLAT = document.createElement("td");
-    trowLAT.innerHTML = elem[4];
-    trowLAT.className = "mainTable__lat";
-    trow.appendChild(trowName);
-    trow.appendChild(trowType);
-    trow.appendChild(trowAddress);
-    trow.appendChild(trowLON);
-    trow.appendChild(trowLAT);
-    markerTabel.appendChild(trow);
-    trow.onclick = (e) => {
-      zoomToMarker(
-        Number(e.currentTarget.children[3].textContent),
-        Number(e.currentTarget.children[4].textContent)
-      );
-    };
-  }
-};
+// isRussianOnlyCheckBox.onchange = () => {
+//   if (isRussianOnlyCheckBox.checked) {
+//     map.setLayers([tileLayer, ruMarkersLayer]);
+//     const table = document.getElementById("mainTable__body");
+//     const removableElements = table.getElementsByClassName("englishRow");
+//     while (removableElements[0]) {
+//       removableElements[0].parentNode.removeChild(removableElements[0]);
+//     }
+//     return;
+//   }
+//   map.setLayers([tileLayer, markersLayer, ruMarkersLayer]);
+//   const markerTabel = document.getElementById("mainTable__body");
+//   markerTabel.replaceChildren();
+//   let data = [];
+//   markersSource.forEachFeature((feature) => {
+//     data.push([
+//       feature.values_.name,
+//       feature.values_["marker-symbol"],
+//       feature.values_.address,
+//       feature.values_.geometry.flatCoordinates[0],
+//       feature.values_.geometry.flatCoordinates[1],
+//     ]);
+//   });
+//   for (let i = 0; i < data.length; ++i) {
+//     const elem = data[i];
+//     const trow = document.createElement("tr");
+//     trow.className = "mainTable__row englishRow";
+//     const trowName = document.createElement("td");
+//     trowName.innerHTML = elem[0];
+//     trowName.className = "mainTable__name";
+//     const trowType = document.createElement("td");
+//     trowType.innerHTML = elem[1];
+//     trowType.className = "mainTable__type";
+//     const trowAddress = document.createElement("td");
+//     trowAddress.innerHTML = elem[2];
+//     trowAddress.className = "mainTable__address";
+//     const trowLON = document.createElement("td");
+//     trowLON.innerHTML = elem[3];
+//     trowLON.className = "mainTable__lon";
+//     const trowLAT = document.createElement("td");
+//     trowLAT.innerHTML = elem[4];
+//     trowLAT.className = "mainTable__lat";
+//     trow.appendChild(trowName);
+//     trow.appendChild(trowType);
+//     trow.appendChild(trowAddress);
+//     trow.appendChild(trowLON);
+//     trow.appendChild(trowLAT);
+//     markerTabel.appendChild(trow);
+//     trow.onclick = (e) => {
+//       zoomToMarker(
+//         Number(e.currentTarget.children[3].textContent),
+//         Number(e.currentTarget.children[4].textContent)
+//       );
+//     };
+//   }
+//   data = [];
+//   ruMarkersSource.forEachFeature((feature) => {
+//     data.push([
+//       feature.values_.name_ru,
+//       "",
+//       "",
+//       feature.values_.geometry.flatCoordinates[0],
+//       feature.values_.geometry.flatCoordinates[1],
+//     ]);
+//   });
+//   for (let i = 0; i < data.length; ++i) {
+//     const elem = data[i];
+//     const trow = document.createElement("tr");
+//     trow.className = "mainTable__row";
+//     const trowName = document.createElement("td");
+//     trowName.innerHTML = elem[0];
+//     trowName.className = "mainTable__name";
+//     const trowType = document.createElement("td");
+//     trowType.innerHTML = elem[1];
+//     trowType.className = "mainTable__type";
+//     const trowAddress = document.createElement("td");
+//     trowAddress.innerHTML = elem[2];
+//     trowAddress.className = "mainTable__address";
+//     const trowLON = document.createElement("td");
+//     trowLON.innerHTML = elem[3];
+//     trowLON.className = "mainTable__lon";
+//     const trowLAT = document.createElement("td");
+//     trowLAT.innerHTML = elem[4];
+//     trowLAT.className = "mainTable__lat";
+//     trow.appendChild(trowName);
+//     trow.appendChild(trowType);
+//     trow.appendChild(trowAddress);
+//     trow.appendChild(trowLON);
+//     trow.appendChild(trowLAT);
+//     markerTabel.appendChild(trow);
+//     trow.onclick = (e) => {
+//       zoomToMarker(
+//         Number(e.currentTarget.children[3].textContent),
+//         Number(e.currentTarget.children[4].textContent)
+//       );
+//     };
+//   }
+// };
 
 showTileBTN.onclick = () => {
   map.setLayers([tileLayer, markersLayer, ruMarkersLayer]);
@@ -267,19 +274,6 @@ closeModalBTN.onclick = () => {
   document.getElementById("myModal").style.display = "none";
 };
 
-const showModal = (name, type, address, name_ru = null) => {
-  const modalWindow = document.getElementById("myModal");
-  document.getElementById("myModal__name").textContent = name;
-  if (name_ru !== null) {
-    const ruHeader = document.getElementById("myModal__nameRU");
-    ruHeader.textContent = name_ru;
-    ruHeader.style.display = "block";
-  }
-  document.getElementById("myModal__address").textContent = address;
-  document.getElementById("myModal__marker").textContent = type;
-  modalWindow.style.display = "flex";
-};
-
 map.on("click", function (e) {
   map.forEachFeatureAtPixel(e.pixel, function (feature, layer) {
     if (layer.getClassName() == "markers") {
@@ -295,6 +289,113 @@ map.on("click", function (e) {
   });
 });
 
+map.on("moveend", () => {
+  dumpView();
+});
+
+startShowBTN.onclick = () => {
+  const btn = document.getElementById("myModal__closeBtn");
+  btn.style.display = "none";
+  if (map.getAllLayers().includes(markersLayer)) {
+    const features = markersSource
+      .getFeatures()
+      .concat(ruMarkersSource.getFeatures());
+    startShow(features, 0);
+  } else {
+    const features = ruMarkersSource.getFeatures();
+    startShow(features, 0);
+  }
+};
+
+ruMarkersSource.on("featuresloadend", () => {
+  featuresTable.sort();
+  const markerTabel = document.getElementById("mainTable__body");
+  for (let i = 0; i < featuresTable.length; ++i) {
+    if (featuresTable[i].name_ru !== undefined) {
+      const trow = document.createElement("tr");
+      trow.className = "mainTable__row";
+      const trowName = document.createElement("td");
+      trowName.innerHTML = featuresTable[i].values_.name_ru;
+      trowName.className = "mainTable__name";
+      const trowType = document.createElement("td");
+      trowType.innerHTML = "";
+      trowType.className = "mainTable__type";
+      const trowAddress = document.createElement("td");
+      trowAddress.innerHTML = "";
+      trowAddress.className = "mainTable__address";
+      const trowLON = document.createElement("td");
+      trowLON.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[0];
+      trowLON.className = "mainTable__lon";
+      const trowLAT = document.createElement("td");
+      trowLAT.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[1];
+      trowLAT.className = "mainTable__lat";
+      trow.appendChild(trowName);
+      trow.appendChild(trowType);
+      trow.appendChild(trowAddress);
+      trow.appendChild(trowLON);
+      trow.appendChild(trowLAT);
+      markerTabel.appendChild(trow);
+      trow.onclick = (e) => {
+        zoomToMarker(
+          Number(e.currentTarget.children[3].textContent),
+          Number(e.currentTarget.children[4].textContent)
+        );
+      };
+    }
+  }
+});
+
+markersSource.on("featuresloadend", () => {
+  featuresTable.sort();
+  const markerTabel = document.getElementById("mainTable__body");
+  for (let i = 0; i < featuresTable.length; ++i) {
+    if (featuresTable[i].values_.name !== undefined) {
+      const trow = document.createElement("tr");
+      trow.className = "mainTable__row englishRow";
+      const trowName = document.createElement("td");
+      trowName.innerHTML = featuresTable[i].values_.name;
+      trowName.className = "mainTable__name";
+      const trowType = document.createElement("td");
+      trowType.innerHTML = featuresTable[i].values_["makrer-symbol"];
+      trowType.className = "mainTable__type";
+      const trowAddress = document.createElement("td");
+      trowAddress.innerHTML = featuresTable[i].values_.address;
+      trowAddress.className = "mainTable__address";
+      const trowLON = document.createElement("td");
+      trowLON.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[0];
+      trowLON.className = "mainTable__lon";
+      const trowLAT = document.createElement("td");
+      trowLAT.innerHTML = featuresTable[i].values_.geometry.flatCoordinates[1];
+      trowLAT.className = "mainTable__lat";
+      trow.appendChild(trowName);
+      trow.appendChild(trowType);
+      trow.appendChild(trowAddress);
+      trow.appendChild(trowLON);
+      trow.appendChild(trowLAT);
+      markerTabel.appendChild(trow);
+      trow.onclick = (e) => {
+        zoomToMarker(
+          Number(e.currentTarget.children[3].textContent),
+          Number(e.currentTarget.children[4].textContent)
+        );
+      };
+    }
+  }
+});
+
+const showModal = (name, type, address, name_ru = null) => {
+  const modalWindow = document.getElementById("myModal");
+  document.getElementById("myModal__name").textContent = name;
+  if (name_ru !== null) {
+    const ruHeader = document.getElementById("myModal__nameRU");
+    ruHeader.textContent = name_ru;
+    ruHeader.style.display = "block";
+  }
+  document.getElementById("myModal__address").textContent = address;
+  document.getElementById("myModal__marker").textContent = type;
+  modalWindow.style.display = "flex";
+};
+
 const dumpView = () => {
   window.history.pushState(
     null,
@@ -306,10 +407,6 @@ const dumpView = () => {
     )
   );
 };
-
-map.on("moveend", (e = 1) => {
-  dumpView();
-});
 
 const zoomToMarker = (lat, lon) => {
   map.setView(
@@ -348,109 +445,3 @@ const startShow = (features, cur) => {
   }
   return setTimeout(() => startShow(features, cur + 1), 2000);
 };
-
-startShowBTN.onclick = () => {
-  const btn = document.getElementById("myModal__closeBtn");
-  btn.style.display = "none";
-  if (map.getAllLayers().includes(markersLayer)) {
-    const features = markersSource
-      .getFeatures()
-      .concat(ruMarkersSource.getFeatures());
-    startShow(features, 0);
-  } else {
-    const features = ruMarkersSource.getFeatures();
-    startShow(features, 0);
-  }
-};
-
-ruMarkersSource.on("featuresloadend", () => {
-  const markerTabel = document.getElementById("mainTable__body");
-  const data = [];
-  ruMarkersSource.forEachFeature((feature) => {
-    data.push([
-      feature.values_.name_ru,
-      "",
-      "",
-      feature.values_.geometry.flatCoordinates[0],
-      feature.values_.geometry.flatCoordinates[1],
-    ]);
-  });
-  for (let i = 0; i < data.length; ++i) {
-    const elem = data[i];
-    const trow = document.createElement("tr");
-    trow.className = "mainTable__row";
-    const trowName = document.createElement("td");
-    trowName.innerHTML = elem[0];
-    trowName.className = "mainTable__name";
-    const trowType = document.createElement("td");
-    trowType.innerHTML = elem[1];
-    trowType.className = "mainTable__type";
-    const trowAddress = document.createElement("td");
-    trowAddress.innerHTML = elem[2];
-    trowAddress.className = "mainTable__address";
-    const trowLON = document.createElement("td");
-    trowLON.innerHTML = elem[3];
-    trowLON.className = "mainTable__lon";
-    const trowLAT = document.createElement("td");
-    trowLAT.innerHTML = elem[4];
-    trowLAT.className = "mainTable__lat";
-    trow.appendChild(trowName);
-    trow.appendChild(trowType);
-    trow.appendChild(trowAddress);
-    trow.appendChild(trowLON);
-    trow.appendChild(trowLAT);
-    markerTabel.appendChild(trow);
-    trow.onclick = (e) => {
-      zoomToMarker(
-        Number(e.currentTarget.children[3].textContent),
-        Number(e.currentTarget.children[4].textContent)
-      );
-    };
-  }
-});
-
-markersSource.on("featuresloadend", () => {
-  const markerTabel = document.getElementById("mainTable__body");
-  const data = [];
-  markersSource.forEachFeature((feature) => {
-    data.push([
-      feature.values_.name,
-      feature.values_["marker-symbol"],
-      feature.values_.address,
-      feature.values_.geometry.flatCoordinates[0],
-      feature.values_.geometry.flatCoordinates[1],
-    ]);
-  });
-  for (let i = 0; i < data.length; ++i) {
-    const elem = data[i];
-    const trow = document.createElement("tr");
-    trow.className = "mainTable__row englishRow";
-    const trowName = document.createElement("td");
-    trowName.innerHTML = elem[0];
-    trowName.className = "mainTable__name";
-    const trowType = document.createElement("td");
-    trowType.innerHTML = elem[1];
-    trowType.className = "mainTable__type";
-    const trowAddress = document.createElement("td");
-    trowAddress.innerHTML = elem[2];
-    trowAddress.className = "mainTable__address";
-    const trowLON = document.createElement("td");
-    trowLON.innerHTML = elem[3];
-    trowLON.className = "mainTable__lon";
-    const trowLAT = document.createElement("td");
-    trowLAT.innerHTML = elem[4];
-    trowLAT.className = "mainTable__lat";
-    trow.appendChild(trowName);
-    trow.appendChild(trowType);
-    trow.appendChild(trowAddress);
-    trow.appendChild(trowLON);
-    trow.appendChild(trowLAT);
-    markerTabel.appendChild(trow);
-    trow.onclick = (e) => {
-      zoomToMarker(
-        Number(e.currentTarget.children[3].textContent),
-        Number(e.currentTarget.children[4].textContent)
-      );
-    };
-  }
-});
