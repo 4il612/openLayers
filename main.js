@@ -95,7 +95,9 @@ searchBar.onkeyup = () => {
     removableElements[0].parentNode.removeChild(removableElements[0]);
   }
   for (let i = featuresTable.length - 1; i >= 0; --i) {
-    if (featuresTable[i].values_.name_ru?.includes(searchBar.value)) {
+    if (
+      featuresTable[i].values_.name_ru?.toLowerCase().includes(searchBar.value)
+    ) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row";
       const trowName = document.createElement("td");
@@ -127,7 +129,9 @@ searchBar.onkeyup = () => {
       };
     }
 
-    if (featuresTable[i].values_.name?.includes(searchBar.value)) {
+    if (
+      featuresTable[i].values_.name?.toLowerCase().includes(searchBar.value)
+    ) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row englishRow";
       const trowName = document.createElement("td");
