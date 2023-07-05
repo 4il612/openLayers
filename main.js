@@ -132,7 +132,9 @@ searchBar.oninput = () => {
     }
 
     if (
-      featuresTable[i].values_.name?.toLowerCase().includes(searchBar.value)
+      featuresTable[i].values_.name
+        ?.toLowerCase()
+        .includes(searchBar.value.toLowerCase())
     ) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row englishRow";
