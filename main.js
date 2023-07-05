@@ -94,7 +94,7 @@ searchBar.onkeyup = () => {
   while (removableElements[0]) {
     removableElements[0].parentNode.removeChild(removableElements[0]);
   }
-  for (let i = featuresTable.length - 1; i > 0; --i) {
+  for (let i = featuresTable.length - 1; i >= 0; --i) {
     if (featuresTable[i].values_.name_ru?.includes(searchBar.value)) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row";
@@ -176,105 +176,6 @@ isRussianOnlyCheckBox.onchange = () => {
   }
   map.removeLayer(ruMarkersLayer);
 };
-
-// isRussianOnlyCheckBox.onchange = () => {
-//   if (isRussianOnlyCheckBox.checked) {
-//     map.setLayers([tileLayer, ruMarkersLayer]);
-//     const table = document.getElementById("mainTable__body");
-//     const removableElements = table.getElementsByClassName("englishRow");
-//     while (removableElements[0]) {
-//       removableElements[0].parentNode.removeChild(removableElements[0]);
-//     }
-//     return;
-//   }
-//   map.setLayers([tileLayer, markersLayer, ruMarkersLayer]);
-//   const markerTabel = document.getElementById("mainTable__body");
-//   markerTabel.replaceChildren();
-//   let data = [];
-//   markersSource.forEachFeature((feature) => {
-//     data.push([
-//       feature.values_.name,
-//       feature.values_["marker-symbol"],
-//       feature.values_.address,
-//       feature.values_.geometry.flatCoordinates[0],
-//       feature.values_.geometry.flatCoordinates[1],
-//     ]);
-//   });
-//   for (let i = 0; i < data.length; ++i) {
-//     const elem = data[i];
-//     const trow = document.createElement("tr");
-//     trow.className = "mainTable__row englishRow";
-//     const trowName = document.createElement("td");
-//     trowName.innerHTML = elem[0];
-//     trowName.className = "mainTable__name";
-//     const trowType = document.createElement("td");
-//     trowType.innerHTML = elem[1];
-//     trowType.className = "mainTable__type";
-//     const trowAddress = document.createElement("td");
-//     trowAddress.innerHTML = elem[2];
-//     trowAddress.className = "mainTable__address";
-//     const trowLON = document.createElement("td");
-//     trowLON.innerHTML = elem[3];
-//     trowLON.className = "mainTable__lon";
-//     const trowLAT = document.createElement("td");
-//     trowLAT.innerHTML = elem[4];
-//     trowLAT.className = "mainTable__lat";
-//     trow.appendChild(trowName);
-//     trow.appendChild(trowType);
-//     trow.appendChild(trowAddress);
-//     trow.appendChild(trowLON);
-//     trow.appendChild(trowLAT);
-//     markerTabel.appendChild(trow);
-//     trow.onclick = (e) => {
-//       zoomToMarker(
-//         Number(e.currentTarget.children[3].textContent),
-//         Number(e.currentTarget.children[4].textContent)
-//       );
-//     };
-//   }
-//   data = [];
-//   ruMarkersSource.forEachFeature((feature) => {
-//     data.push([
-//       feature.values_.name_ru,
-//       "",
-//       "",
-//       feature.values_.geometry.flatCoordinates[0],
-//       feature.values_.geometry.flatCoordinates[1],
-//     ]);
-//   });
-//   for (let i = 0; i < data.length; ++i) {
-//     const elem = data[i];
-//     const trow = document.createElement("tr");
-//     trow.className = "mainTable__row";
-//     const trowName = document.createElement("td");
-//     trowName.innerHTML = elem[0];
-//     trowName.className = "mainTable__name";
-//     const trowType = document.createElement("td");
-//     trowType.innerHTML = elem[1];
-//     trowType.className = "mainTable__type";
-//     const trowAddress = document.createElement("td");
-//     trowAddress.innerHTML = elem[2];
-//     trowAddress.className = "mainTable__address";
-//     const trowLON = document.createElement("td");
-//     trowLON.innerHTML = elem[3];
-//     trowLON.className = "mainTable__lon";
-//     const trowLAT = document.createElement("td");
-//     trowLAT.innerHTML = elem[4];
-//     trowLAT.className = "mainTable__lat";
-//     trow.appendChild(trowName);
-//     trow.appendChild(trowType);
-//     trow.appendChild(trowAddress);
-//     trow.appendChild(trowLON);
-//     trow.appendChild(trowLAT);
-//     markerTabel.appendChild(trow);
-//     trow.onclick = (e) => {
-//       zoomToMarker(
-//         Number(e.currentTarget.children[3].textContent),
-//         Number(e.currentTarget.children[4].textContent)
-//       );
-//     };
-//   }
-// };
 
 showTileBTN.onclick = () => {
   map.setLayers([tileLayer, markersLayer, ruMarkersLayer]);
@@ -374,7 +275,7 @@ markersSource.on("featuresloadend", () => {
       trowName.innerHTML = featuresTable[i].values_.name;
       trowName.className = "mainTable__name";
       const trowType = document.createElement("td");
-      trowType.innerHTML = featuresTable[i].values_["makrer-symbol"];
+      trowType.innerHTML = featuresTable[i].values_["marker-symbol"];
       trowType.className = "mainTable__type";
       const trowAddress = document.createElement("td");
       trowAddress.innerHTML = featuresTable[i].values_.address;
