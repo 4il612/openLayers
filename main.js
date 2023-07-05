@@ -72,6 +72,7 @@ const showVectorBTN = document.getElementById("showVectorBTN");
 const closeModalBTN = document.getElementById("myModal__closeBtn");
 const startShowBTN = document.getElementById("startShowBTN");
 const isRussianOnlyCheckBox = document.getElementById("filterBoxCheck");
+const isEnglishOnlyCheckBox = document.getElementById("filterBoxCheck2");
 const searchBar = document.getElementById("searchPointInput");
 
 //массив строк таблицы
@@ -125,6 +126,7 @@ searchBar.onkeyup = () => {
         );
       };
     }
+
     if (featuresTable[i].values_.name?.includes(searchBar.value)) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row englishRow";
@@ -157,6 +159,22 @@ searchBar.onkeyup = () => {
       };
     }
   }
+};
+
+isEnglishOnlyCheckBox.onchange = () => {
+  if (isEnglishOnlyCheckBox.checked) {
+    map.addLayer(markersLayer);
+    return;
+  }
+  map.removeLayer(markersLayer);
+};
+
+isRussianOnlyCheckBox.onchange = () => {
+  if (isRussianOnlyCheckBox.checked) {
+    map.addLayer(ruMarkersLayer);
+    return;
+  }
+  map.removeLayer(ruMarkersLayer);
 };
 
 // isRussianOnlyCheckBox.onchange = () => {
