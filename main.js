@@ -1,50 +1,11 @@
-import GeoJSON from "ol/format/GeoJSON.js";
 import Map from "ol/Map.js";
-import VectorLayer from "ol/layer/Vector.js";
-import VectorSource from "ol/source/Vector.js";
 import View from "ol/View.js";
-import { Fill, Style } from "ol/style.js";
-import TileLayer from "ol/layer/Tile";
-import OSM from "ol/source/OSM";
-
-//построение ресурсов
-const markersSource = new VectorSource({
-  url: "data/points.geojson",
-  format: new GeoJSON({}),
-});
-
-const ruMarkersSource = new VectorSource({
-  url: "data/ruPoints.geojson",
-  format: new GeoJSON(),
-});
-
-//построение слоев
-const markersLayer = new VectorLayer({
-  className: "markers",
-  source: markersSource,
-});
-
-const ruMarkersLayer = new VectorLayer({
-  className: "ruMarkers",
-  source: ruMarkersSource,
-});
-
-const vectorLayer = new VectorLayer({
-  background: "#1a2b39",
-  source: new VectorSource({
-    url: "https://openlayers.org/data/vector/ecoregions.json",
-    format: new GeoJSON(),
-  }),
-  style: function (feature) {
-    const color = feature.get("COLOR") || "#eeeeee";
-    style.getFill().setColor(color);
-    return style;
-  },
-});
-
-const tileLayer = new TileLayer({
-  source: new OSM(),
-});
+import markersSource from "./sources/markersSource";
+import ruMarkersSource from "./sources/ruMarkersSource";
+import markersLayer from "./layers/markersLayer";
+import ruMarkersLayer from "./layers/ruMarkersLayer";
+import vectorLayer from "./layers/vectorLayer";
+import tileLayer from "./layers/tileLayer";
 
 //парсинг URL
 const urlArgs = new URLSearchParams(window.location.search);
@@ -60,12 +21,6 @@ const map = new Map({
   }),
 });
 
-const style = new Style({
-  fill: new Fill({
-    color: "#eeeeee",
-  }),
-});
-
 //поиск объектов для взаимодействия
 const showTileBTN = document.getElementById("showTileBTN");
 const showVectorBTN = document.getElementById("showVectorBTN");
@@ -74,16 +29,17 @@ const startShowBTN = document.getElementById("startShowBTN");
 const isRussianOnlyCheckBox = document.getElementById("filterBoxCheck");
 const isEnglishOnlyCheckBox = document.getElementById("filterBoxCheck2");
 const searchBar = document.getElementById("searchPointInput");
+const modalWindow = document.getElementById("myModal");
 
 //массив строк таблицы
 const featuresTable = [];
 
 //обработчики событий
-markersSource.on("addfeature", (feature) => {
+ruMarkersSource.on("addfeature", (feature) => {
   featuresTable.push(feature.feature);
 });
 
-ruMarkersSource.on("addfeature", (feature) => {
+markersSource.on("addfeature", (feature) => {
   featuresTable.push(feature.feature);
 });
 
@@ -238,7 +194,7 @@ ruMarkersSource.on("featuresloadend", () => {
   featuresTable.sort();
   const markerTabel = document.getElementById("mainTable__body");
   for (let i = 0; i < featuresTable.length; ++i) {
-    if (featuresTable[i].name_ru !== undefined) {
+    if (featuresTable[i].values_.name_ru !== undefined) {
       const trow = document.createElement("tr");
       trow.className = "mainTable__row";
       const trowName = document.createElement("td");
@@ -311,7 +267,6 @@ markersSource.on("featuresloadend", () => {
 });
 
 const showModal = (name, type, address, name_ru = null) => {
-  const modalWindow = document.getElementById("myModal");
   document.getElementById("myModal__name").textContent = name;
   if (name_ru !== null) {
     const ruHeader = document.getElementById("myModal__nameRU");
